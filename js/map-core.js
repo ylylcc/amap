@@ -12,13 +12,12 @@
     const MyMap = {
         instance: null,
 
-        // 1. 内部私有方法：动态加载高德脚本
         _loadSDK() {
             return new Promise((resolve, reject) => {
                 if (window.AMap) return resolve(window.AMap);
 
                 // 配置安全密钥
-                window._AMapSecurityConfig = { securityJsCode: MAP_CONFIG.securityJsCode };
+                window._AMapSecurityConfig = {securityJsCode: MAP_CONFIG.securityJsCode};
 
                 const script = document.createElement('script');
                 script.type = 'text/javascript';
@@ -53,7 +52,7 @@
                 title: title,
                 map: this.instance
             });
-            
+
             // 联动 TDesign (如果存在)
             if (window.TDesign) {
                 window.TDesign.MessagePlugin.info(`已标记: ${title}`);
