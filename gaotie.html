@@ -2,153 +2,69 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://unpkg.com/tdesign-vue-next/dist/tdesign.min.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/tdesign-vue-next/dist/tdesign.min.css" />
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://unpkg.com/tdesign-vue-next/dist/tdesign.min.js"></script>
     <script src="https://unpkg.com/tdesign-icons-vue-next/dist/index.iife.js"></script>
-
+    
     <style>
-        body, html, #app {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        /* 侧边工具栏容器 */
-        .left-toolbar {
-            width: 60px;
-            height: 100vh;
-            background-color: #ffffff;
-            border-right: 1px solid #e7e7e7;
+        body, html, #app { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; }
+        .main-container { display: flex; height: 100vh; }
+        
+        /* 侧边栏样式 */
+        .side-panel {
+            width: 160px;
+            background: #f3f5f8;
+            border-right: 1px solid #dcdfe6;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 16px 0;
-            z-index: 100;
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
         }
 
-        /* 按钮间距 */
-        .tool-btn {
-            margin-bottom: 20px;
-        }
+        .btn-list { padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        
+        /* 强制按钮文字左对齐，图标间距 */
+        .menu-btn { justify-content: flex-start !important; }
 
-        /* 主体布局 */
-        .main-layout {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-        }
-
-        /* 地图容器 */
-        #map-container {
-            flex: 1;
-            height: 100%;
-            position: relative;
-        }
-
-        /* 右上角的状态面板（可选） */
-        .status-panel {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 99;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px;
-            border-radius: 4px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+        /* 地图区域 */
+        #map-container { flex: 1; position: relative; background: #eaecf1; }
     </style>
 </head>
 <body>
 
 <div id="app">
-    <div class="main-layout">
-        <aside class="left-toolbar">
-            <t-avatar size="40px" style="margin-bottom: 30px;">MAP</t-avatar>
-
-            <t-tooltip content="添加标记" placement="right">
-                <t-button shape="square" variant="text" size="large" class="tool-btn" @click="onAddMarker">
-                    <template #icon>
-                        <t-icon name="location"/>
-                    </template>
+    <div class="main-container">
+        <aside class="side-panel">
+            <div style="padding: 20px; font-weight: bold; font-size: 16px;">工具箱</div>
+            <div class="btn-list">
+                <t-button class="menu-btn" variant="base" @click="handle('add')">
+                    <template #icon><t-icon name="add" /></template>新增
                 </t-button>
-            </t-tooltip>
-
-            <t-tooltip content="测量距离" placement="right">
-                <t-button shape="square" variant="text" size="large" class="tool-btn" @click="onMeasure">
-                    <template #icon>
-                        <t-icon name="edit-1"/>
-                    </template>
+                <t-button class="menu-btn" variant="base" @click="handle('search')">
+                    <template #icon><t-icon name="search" /></template>搜索
                 </t-button>
-            </t-tooltip>
-
-            <t-tooltip content="切换图层" placement="right">
-                <t-button shape="square" variant="text" size="large" class="tool-btn" @click="onToggleLayer">
-                    <template #icon>
-                        <t-icon name="layers"/>
-                    </template>
-                </t-button>
-            </t-tooltip>
-
-            <div style="margin-top: auto;">
-                <t-button shape="square" variant="text" class="tool-btn">
-                    <template #icon>
-                        <t-icon name="setting"/>
-                    </template>
+                <t-button class="menu-btn" variant="base" @click="handle('delete')" theme="danger" variant="outline">
+                    <template #icon><t-icon name="delete" /></template>清空
                 </t-button>
             </div>
         </aside>
 
         <main id="map-container">
-            <div class="status-panel" v-if="currentPos">
-                <t-tag theme="primary" variant="light">当前位置：{{ currentPos }}</t-tag>
-            </div>
-        </main>
+            </main>
     </div>
 </div>
 
 <script>
-    const {createApp, ref, onMounted} = Vue;
-
-    const app = createApp({
+    const { createApp } = Vue;
+    createApp({
         setup() {
-            const currentPos = ref('');
-
-            onMounted(() => {
-                console.log('可以在这里调用你服务器上的 $map.init("map-container")');
-                // 示例赋值
-                currentPos.value = "116.39, 39.90";
-            });
-
-            // 按钮点击事件
-            const onAddMarker = () => {
-                TDesign.MessagePlugin.info('请在地图上点击以添加标记');
-                // 这里调用你的工具库方法
-                // $map.startDrawMarker();
+            const handle = (type) => {
+                // 直接调用你服务器上混淆后的工具库
+                // $map.doSomething(type);
+                TDesign.MessagePlugin.success('操作成功：' + type);
             };
-
-            const onMeasure = () => {
-                TDesign.MessagePlugin.warning('测量工具开发中');
-            };
-
-            const onToggleLayer = () => {
-                TDesign.MessagePlugin.success('图层已切换');
-            };
-
-            return {
-                currentPos,
-                onAddMarker,
-                onMeasure,
-                onToggleLayer
-            };
+            return { handle };
         }
-    });
-
-    app.use(TDesign);
-    app.mount('#app');
+    }).use(TDesign).mount('#app');
 </script>
 
 </body>
