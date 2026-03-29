@@ -1,0 +1,1 @@
+import{_ as r}from"./_plugin-vue_export-helper-BCo6x5W8.js";import{c as e,o}from"./index-C9VXbjPR.js";const n=r({},[["render",function(r,n){return o(),e("h2",null,"我是地图主页的内容")}]]);export{n as default};
